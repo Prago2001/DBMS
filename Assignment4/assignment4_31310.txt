@@ -1,0 +1,113 @@
+use assignment4;
+
+create table borrower(
+rollno INT,
+name VARCHAR(100),
+issue_date DATE,
+book_name VARCHAR(100),
+status CHAR(5),
+PRIMARY KEY(rollno)
+);
+
+create table fine(
+rollno INT PRIMARY KEY,
+return_date DATE,
+amount INT,
+FOREIGN KEY (rollno) references borrower(rollno) on delete cascade
+);
+
+DELIMITER //
+create procedure insert_student(IN roll_no INT,name VARCHAR(100),issue_date DATE,book_name VARCHAR(100),status CHAR(5))
+BEGIN
+insert into borrower values(roll_no,name,issue_date,book_name,status);
+END
+//
+DELIMITER;
+
+call insert_student(1,'Aditi','2021-08-15','JAVA','I');
+call insert_student(2,'Aditya','2021-08-01','DBMS','I');
+call insert_student(3,'Anurag','2021-08-31','TOC','I');
+call insert_student(4,'Asim','2021-09-10','CNS','I');
+call insert_student(5,'Aryan','2021-09-04','DS','I');
+call insert_student(6,'Aneesh','2021-08-20','HCI','I');
+call insert_student(7,'Abhishek','2021-08-13','PYTHON','I');
+
+mysql> select * from borrower;
+    -> //
++--------+----------+------------+-----------+--------+
+| rollno | name     | issue_date | book_name | status |
++--------+----------+------------+-----------+--------+
+|      1 | Aditi    | 2021-08-15 | JAVA      | I      |
+|      2 | Aditya   | 2021-08-01 | DBMS      | I      |
+|      3 | Anurag   | 2021-08-31 | TOC       | I      |
+|      4 | Asim     | 2021-09-10 | CNS       | I      |
+|      5 | Aryan    | 2021-09-04 | DS        | I      |
+|      6 | Aneesh   | 2021-08-20 | HCI       | I      |
+|      7 | Abhishek | 2021-08-13 | PYTHON    | I      |
++--------+----------+------------+-----------+--------+
+
+DELIMITER //
+create procedure calculate_fine(IN rno INT, n VARCHAR(10))
+BEGIN
+declare i_date DATE;
+declare day_diff INT;
+declare fine_amt INT;
+DECLARE EXIT HANDLER FOR 1062 select 'Fine already paid';
+select issue_date into i_date from borrower where rollno=rno and name=n;
+select DATEDIFF(CURDATE(),i_date) into day_diff;
+IF (day_diff >= 15 and day_diff <= 30) THEN
+set fine_amt = day_diff * 5;
+insert into fine values(rno,CURDATE(),fine_amt);
+ELSEIF (day_diff > 30) THEN
+set fine_amt = day_diff * 50;
+insert into fine values(rno,CURDATE(),fine_amt);
+END IF;
+update borrower set status ='R' where rollno = rno and name=n;
+END;
+//
+DELIMITER ;
+
+
+call calculate_fine(4,'Asim');
+mysql> select * from borrower;
++--------+----------+------------+-----------+--------+
+| rollno | name     | issue_date | book_name | status |
++--------+----------+------------+-----------+--------+
+|      1 | Aditi    | 2021-08-15 | JAVA      | I      |
+|      2 | Aditya   | 2021-08-01 | DBMS      | I      |
+|      3 | Anurag   | 2021-08-31 | TOC       | I      |
+|      4 | Asim     | 2021-09-10 | CNS       | R      |
+|      5 | Aryan    | 2021-09-04 | DS        | I      |
+|      6 | Aneesh   | 2021-08-20 | HCI       | I      |
+|      7 | Abhishek | 2021-08-13 | PYTHON    | I      |
++--------+----------+------------+-----------+--------+
+
+call calculate_fine(1,'Aditi');
+mysql> select * from fine;
++--------+-------------+--------+
+| rollno | return_date | amount |
++--------+-------------+--------+
+|      1 | 2021-09-13  |    145 |
++--------+-------------+--------+
+mysql> select * from borrower;
++--------+----------+------------+-----------+--------+
+| rollno | name     | issue_date | book_name | status |
++--------+----------+------------+-----------+--------+
+|      1 | Aditi    | 2021-08-15 | JAVA      | R      |
+|      2 | Aditya   | 2021-08-01 | DBMS      | I      |
+|      3 | Anurag   | 2021-08-31 | TOC       | I      |
+|      4 | Asim     | 2021-09-10 | CNS       | R      |
+|      5 | Aryan    | 2021-09-04 | DS        | I      |
+|      6 | Aneesh   | 2021-08-20 | HCI       | I      |
+|      7 | Abhishek | 2021-08-13 | PYTHON    | I      |
++--------+----------+------------+-----------+--------+
+
+mysql> call calculate_fine(1,'Aditi');
++-------------------+
+| Fine already paid |
++-------------------+
+| Fine already paid |
++-------------------+
+
+
+

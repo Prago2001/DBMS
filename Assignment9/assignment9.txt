@@ -1,0 +1,175 @@
+> use assignment9
+switched to db assignment9
+
+> db.createCollection('Student')
+{ "ok" : 1 }
+
+db.Student.insert({
+	roll:1,
+	name:'Aditi',
+	email:'aditi@abc.com',
+	marks:95
+});
+WriteResult({ "nInserted" : 1 })
+
+db.Student.insert({
+	roll:2,
+	name:'Aditya',
+	email:'aditya@abc.com',
+	marks:85	
+});
+WriteResult({ "nInserted" : 1 })
+
+db.Student.insert({
+	roll:3,
+	name:'Anurag',
+	email:'anurag@abc.com',
+	marks:75
+});
+WriteResult({ "nInserted" : 1 })
+
+db.Student.save({
+	_id: ObjectId("618cdf5fe73d5c5dbe58485d"),
+	roll:4,
+	name:'Aryan',
+	email:'aryan@abc.com',
+	marks:92	
+});
+WriteResult({
+	"nMatched" : 0,
+	"nUpserted" : 1,
+	"nModified" : 0,
+	"_id" : ObjectId("618cdf5fe73d5c5dbe58485d")
+})
+
+
+> db.Student.find().pretty()
+{
+	"_id" : ObjectId("618cdf51e73d5c5dbe58485a"),
+	"roll" : 1,
+	"name" : "Aditi",
+	"email" : "aditi@abc.com",
+	"marks" : 95
+}
+{
+	"_id" : ObjectId("618cdf57e73d5c5dbe58485b"),
+	"roll" : 2,
+	"name" : "Aditya",
+	"email" : "aditya@abc.com",
+	"marks" : 85
+}
+{
+	"_id" : ObjectId("618cdf5fe73d5c5dbe58485c"),
+	"roll" : 3,
+	"name" : "Anurag",
+	"email" : "anurag@abc.com",
+	"marks" : 75
+}
+{
+	"_id" : ObjectId("618cdf5fe73d5c5dbe58485d"),
+	"roll" : 4,
+	"name" : "Aryan",
+	"email" : "aryan@abc.com",
+	"marks" : 92
+}
+
+>db.Student.update(
+	{marks:{$gte: 90}},
+	{$set:{grade:'A'}},
+	{multi:true}
+)
+WriteResult({ "nMatched" : 2, "nUpserted" : 0, "nModified" : 2 })
+>db.Student.update(
+	{$and:[{marks:{$lt: 90}},{marks:{$gte: 70}}]},
+	{$set:{grade:'B'}},
+	{multi:true}
+)
+WriteResult({ "nMatched" : 2, "nUpserted" : 0, "nModified" : 2 })
+
+> db.Student.find().pretty()
+{
+	"_id" : ObjectId("618cdf51e73d5c5dbe58485a"),
+	"roll" : 1,
+	"name" : "Aditi",
+	"email" : "aditi@abc.com",
+	"marks" : 95,
+	"grade" : "A"
+}
+{
+	"_id" : ObjectId("618cdf57e73d5c5dbe58485b"),
+	"roll" : 2,
+	"name" : "Aditya",
+	"email" : "aditya@abc.com",
+	"marks" : 85,
+	"grade" : "B"
+}
+{
+	"_id" : ObjectId("618cdf5fe73d5c5dbe58485c"),
+	"roll" : 3,
+	"name" : "Anurag",
+	"email" : "anurag@abc.com",
+	"marks" : 75,
+	"grade" : "B"
+}
+{
+	"_id" : ObjectId("618cdf5fe73d5c5dbe58485d"),
+	"roll" : 4,
+	"name" : "Aryan",
+	"email" : "aryan@abc.com",
+	"marks" : 92,
+	"grade" : "A"
+}
+
+>db.Student.remove({'roll':4});
+>db.Student.find().pretty()
+{
+	"_id" : ObjectId("618cdf51e73d5c5dbe58485a"),
+	"roll" : 1,
+	"name" : "Aditi",
+	"email" : "aditi@abc.com",
+	"marks" : 95,
+	"grade" : "A"
+}
+{
+	"_id" : ObjectId("618cdf57e73d5c5dbe58485b"),
+	"roll" : 2,
+	"name" : "Aditya",
+	"email" : "aditya@abc.com",
+	"marks" : 85,
+	"grade" : "B"
+}
+{
+	"_id" : ObjectId("618cdf5fe73d5c5dbe58485c"),
+	"roll" : 3,
+	"name" : "Anurag",
+	"email" : "anurag@abc.com",
+	"marks" : 75,
+	"grade" : "B"
+}
+
+>db.Student.remove({'roll':2},1);
+> db.Student.find().pretty()
+{
+	"_id" : ObjectId("618cdf51e73d5c5dbe58485a"),
+	"roll" : 1,
+	"name" : "Aditi",
+	"email" : "aditi@abc.com",
+	"marks" : 95,
+	"grade" : "A"
+}
+{
+	"_id" : ObjectId("618cdf5fe73d5c5dbe58485c"),
+	"roll" : 3,
+	"name" : "Anurag",
+	"email" : "anurag@abc.com",
+	"marks" : 75,
+	"grade" : "B"
+}
+>db.Student.update(
+	{roll:2},
+	{$set:{roll:2,name:'Abhay',email:'abhay@abc.com',marks:87,grade:'A'}},
+	{upsert:true}
+)
+> db.Student.find({roll:2})
+{ "_id" : ObjectId("61922252378ee2632904d529"), "roll" : 2, "email" : "abhay@abc.com", "grade" : "A", "marks" : 87, "name" : "Abhay" }
+

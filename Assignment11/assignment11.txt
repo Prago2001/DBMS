@@ -1,0 +1,71 @@
+> use assignment11
+switched to db assignment11
+> db.createCollection('order')
+{ "ok" : 1 }
+
+> db.order.insert([{Customer_id:'A1',Amount:400,Status:'P'},{Customer_id:'B1',Amount:300,Status:'D'},{Customer_id:'A1',Amount:200,Status:'F'},{Customer_id:'C1',Amount:200,Status:'F'},{Customer_id:'B1',Amount:700,Status:'P'},{Customer_id:'B1',Amount:800,Status:'P'}])
+BulkWriteResult({
+	"writeErrors" : [ ],
+	"writeConcernErrors" : [ ],
+	"nInserted" : 6,
+	"nUpserted" : 0,
+	"nMatched" : 0,
+	"nModified" : 0,
+	"nRemoved" : 0,
+	"upserted" : [ ]
+})
+> db.order.insert([{Customer_id:'A1',Amount:700,Status:'D'},{Customer_id:'B1',Amount:1200,Status:'D'},{Customer_id:'C1',Amount:150,Status:'D'},{Customer_id:'C1',Amount:845,Status:'F'},{Customer_id:'A1',Amount:800,Status:'P'},{Customer_id:'A1',Amount:550,Status:'D'},{Customer_id:'B1',Amount:780,Status:'F'},{Customer_id:'C1',Amount:1500,Status:'D'}])
+BulkWriteResult({
+	"writeErrors" : [ ],
+	"writeConcernErrors" : [ ],
+	"nInserted" : 8,
+	"nUpserted" : 0,
+	"nMatched" : 0,
+	"nModified" : 0,
+	"nRemoved" : 0,
+	"upserted" : [ ]
+})
+> db.order.find()
+{ "_id" : ObjectId("619f267e7b7b33ada6c03fc7"), "Customer_id" : "A1", "Amount" : 400, "Status" : "P" }
+{ "_id" : ObjectId("619f267e7b7b33ada6c03fc8"), "Customer_id" : "B1", "Amount" : 300, "Status" : "D" }
+{ "_id" : ObjectId("619f267e7b7b33ada6c03fc9"), "Customer_id" : "A1", "Amount" : 200, "Status" : "F" }
+{ "_id" : ObjectId("619f267e7b7b33ada6c03fca"), "Customer_id" : "C1", "Amount" : 200, "Status" : "F" }
+{ "_id" : ObjectId("619f267e7b7b33ada6c03fcb"), "Customer_id" : "B1", "Amount" : 700, "Status" : "P" }
+{ "_id" : ObjectId("619f267e7b7b33ada6c03fcc"), "Customer_id" : "B1", "Amount" : 800, "Status" : "P" }
+{ "_id" : ObjectId("619f28007b7b33ada6c03fcd"), "Customer_id" : "A1", "Amount" : 700, "Status" : "D" }
+{ "_id" : ObjectId("619f28007b7b33ada6c03fce"), "Customer_id" : "B1", "Amount" : 1200, "Status" : "D" }
+{ "_id" : ObjectId("619f28007b7b33ada6c03fcf"), "Customer_id" : "C1", "Amount" : 150, "Status" : "D" }
+{ "_id" : ObjectId("619f28007b7b33ada6c03fd0"), "Customer_id" : "C1", "Amount" : 845, "Status" : "F" }
+{ "_id" : ObjectId("619f28007b7b33ada6c03fd1"), "Customer_id" : "A1", "Amount" : 800, "Status" : "P" }
+{ "_id" : ObjectId("619f28007b7b33ada6c03fd2"), "Customer_id" : "A1", "Amount" : 550, "Status" : "D" }
+{ "_id" : ObjectId("619f28007b7b33ada6c03fd3"), "Customer_id" : "B1", "Amount" : 780, "Status" : "F" }
+{ "_id" : ObjectId("619f28007b7b33ada6c03fd4"), "Customer_id" : "C1", "Amount" : 1500, "Status" : "D" }
+
+#Sum of Amount of Delievered Orders of each customer
+var mapfunction=function(){if(this.Status=='D')emit(this.Customer_id,this.Amount)};
+var reducefunction=function(key,values){return Array.sum(values);};
+db.order.mapReduce(mapfunction,reducefunction,{'out':'delieverdOrders'})
+> db.delieverdOrders.find().pretty()
+{ "_id" : "C1", "value" : 1650 }
+{ "_id" : "A1", "value" : 1250 }
+{ "_id" : "B1", "value" : 1500 }
+
+#Minimum Amount of each customer
+var mapfunction1=function(){emit(this.Customer_id,this.Amount)};
+var reducefunction1=function(key,values){return Math.min.apply(Math,values);};
+db.order.mapReduce(mapfunction1,reducefunction1,{'out':'minAmtOrder'})
+> db.minAmtOrder.find().pretty()
+{ "_id" : "C1", "value" : 150 }
+{ "_id" : "A1", "value" : 200 }
+{ "_id" : "B1", "value" : 300 }
+
+
+#Max Amount of failed orders of each customer
+var mapfunction2=function(){if(this.Status=='F')emit(this.Customer_id,this.Amount)};
+var reducefunction2=function(key,values){return Math.max.apply(Math,values);};
+db.order.mapReduce(mapfunction2,reducefunction2,{'out':'maxAmtFailedOrder'})
+> db.maxAmtFailedOrder.find().pretty();
+{ "_id" : "B1", "value" : 780 }
+{ "_id" : "C1", "value" : 845 }
+{ "_id" : "A1", "value" : 200 }
+

@@ -1,0 +1,144 @@
+{% load static %}
+<!-- Preloader -->
+<!-- Preloader -->
+
+
+<div id="preloader">
+    <div class="preload-content">
+        <div id="dento-load"></div>
+    </div>
+</div>
+
+<!-- ***** Header Area Start ***** -->
+<header class="header-area">
+    <!-- Top Header Area -->
+    <!--<div class="top-header-area bg-dark">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-6 col-md-9 col-lg-8">
+                    <div class="top-header-content">
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Brgy. Enclaro, Binalbagan, Negros Occidental"><i
+                                class="fa fa-map-marker"></i> <span class="text-white">Brgy. Enclaro, Binalbagan, Negros Occidental</span></a>
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="https://itsourcecode.com/"><i
+                                class="fa fa-envelope"></i> <span class="text-white">Itsourcecode@gmail.com</span></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 col-lg-4">
+                    <div class="top-header-social-info text-right">
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i
+                                class="fa fa-facebook text-white"></i></a>
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i
+                                class="fa fa-twitter text-white"></i></a>
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Google Plus"><i
+                                class="fa fa-google-plus text-white"></i></a>
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Linkedin"><i
+                                class="fa fa-linkedin text-white"></i></a>
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Pinterest"><i
+                                class="fa fa-pinterest text-white"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- Top Header End -->
+
+    <!-- Main Header Start -->
+    <div class="main-header-area bg-primary">
+        <div class="classy-nav-container breakpoint-off">
+            <div class="container">
+                <!-- Classy Menu -->
+                <nav class="classy-navbar justify-content-between" id="dentoNav">
+
+                    <!-- Logo -->
+                    <a class="nav-brand text-white" href="">Online Assignment Submission
+                    </a>
+
+                    <!-- Navbar Toggler -->
+                    <div class="classy-navbar-toggler">
+                        <span class="navbarToggler"><span></span><span></span><span></span></span>
+                    </div>
+
+                    <!-- Menu -->
+                    <div class="classy-menu">
+
+                        <!-- Close Button -->
+                        <div class="classycloseIcon">
+                            <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                        </div>
+
+                        <!-- Nav Start -->
+                        <div class="classynav">
+
+
+                            <ul id="nav">
+
+                                <li><a href="/">Home</a></li>
+
+                                {% if request.user.is_authenticated and request.user.role == 'instructor' %}
+
+                                    <li>
+                                        <a href="">
+                                            <span class="glyphicon glyphicon-user">
+                                                    {{ request.user.first_name }}
+                                            </span>
+                                        </a>
+                                        <ul class="dropdown">
+                                            <li><a href="{% url 'authentication:instructor-profile-update' %}"> Edit Profile</a></li>
+                                            <li><a href="{% url 'core:course' %}">Courses</a></li>
+                                            <li><a href="{% url 'core:course-create' %}"> Create Course</a></li>
+                                            <li><a href="{% url 'core:assignment-submission-list' %}"> Assignment Submissions</a></li>
+                                            <li><a href="{% url 'authentication:logout' %}"> Logout</a></li>
+
+                                        </ul>
+                                    </li>
+
+
+                             {% elif request.user.is_authenticated and request.user.role == 'student' %}
+                                     <li><a href="{% url 'core:course' %}">Courses</a></li>
+
+                                    <li>
+                                        <a href="">
+                                            <span class="glyphicon glyphicon-user">
+                                                    {{ request.user.first_name }}
+                                            </span>
+                                        </a>
+                                        <ul class="dropdown">
+
+                                            <li><a href="{% url 'authentication:student-profile-update' %}"> Edit Profile</a></li>
+                                            <li><a href="{% url 'core:assignment-submission-list' %}"> Assignment Submissions</a></li>
+                                            <li><a href="{% url 'authentication:logout' %}"> Logout</a></li>
+
+                                        </ul>
+                                    </li>
+
+
+
+
+                                {% else %}
+                                    <li><a href="#">Register</a>
+                                        <ul class="dropdown">
+                                            <li><a href="{% url 'authentication:instructor-register' %}"> INSTRUCTOR</a></li>
+                                            <li><a href="{% url 'authentication:student-register' %}"> STUDENT</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <a href="{% url 'authentication:login' %}">
+                                            <span class="glyphicon glyphicon-user"> Login</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+
+                        </div>
+                        <!-- Nav End -->
+                    </div>
+
+                    <!-- Booking Now Button -->
+
+
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>

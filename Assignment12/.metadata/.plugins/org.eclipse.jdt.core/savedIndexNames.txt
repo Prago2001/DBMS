@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+/home/pratik/Documents/SEM5/DBMS/Assignment12/.metadata/.plugins/org.eclipse.jdt.core
+646308851.index
+556333373.index
+3880651618.index

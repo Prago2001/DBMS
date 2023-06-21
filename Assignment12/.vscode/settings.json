@@ -1,0 +1,8 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "mongo-java-driver-2.13.3-sources.jar",
+        "/home/pratik/Downloads/mongo-java-driver-3.0.4-sources.jar",
+        "mongo-java-driver-3.0.4.jar"
+    ]
+}

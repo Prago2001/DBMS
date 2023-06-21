@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Assignments{% endblock %}
+{% block content %}
+    <div class="container">
+            <strong><h3>Assignments</h3></strong>
+            <hr/>
+            <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Course Name</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Student Name</th>
+                        <th scope="col">University ID</th>
+                        <th scope="col">Answer</th>
+                        <th scope="col">Marks Obtained</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for object in object_list %}
+                    {% if request.user.role == 'instructor' %}
+                        <tr>
+                            <td>{{ object.course_name }}</td>
+                            <td>{{ object.title }}</td>
+                            <td>{{ object.name}}</td>
+                            <td>{{ object.university_id}}</td>
+                            <td>
+                                {% if object.content %}
+                                {{ object.content}}
+                                {% elif object.file %}
+                                <a href="/media/{{object.file}}">{{ object.file}}</a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if object.marksObtained %}
+                                    {{object.marksObtained}}
+                                {% else %}
+                                    <a href="{% url 'core:enter-mark' object.id%}">Enter Marks</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% elif request.user.role == 'student' and request.user == object.user %}
+                        <tr>
+                            <td>{{ object.course_name }}</td>
+                            <td>{{ object.title }}</td>
+                            <td>{{ object.name}}</td>
+                            <td>{{ object.university_id}}</td>
+                            <td>
+                                {% if object.content %}
+                                {{ object.content}}
+                                {% elif object.file %}
+                                <a href="/media/{{object.file}}">{{ object.file}}</a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if object.marksObtained %}
+                                    {{object.marksObtained}}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+    </div>
+{% endblock %}

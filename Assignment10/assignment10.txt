@@ -1,0 +1,260 @@
+> use assignment10
+switched to db assignment10
+> db.createCollection('student')
+{ "ok" : 1 }
+>db.student.insert({roll:1,name:"navin",age:21,subject_marks:{OOP:70,DSA:80}})
+WriteResult({ "nInserted" : 1 })
+>db.student.insert([{roll:2,name:"saurabh",age:19,subject_marks:{OOP:90,DSA:85}},
+	{roll:3,name:"aditya",age:20,subject_marks:{OOP:82,DSA:74}},
+	{roll:4,name:"anusha",age:19,subject_marks:{OOP:70,DSA:65}},
+	{roll:5,name:"anurag",age:20,subject_marks:{OOP:98,DSA:95}}])
+BulkWriteResult({
+	"writeErrors" : [ ],
+	"writeConcernErrors" : [ ],
+	"nInserted" : 4,
+	"nUpserted" : 0,
+	"nMatched" : 0,
+	"nModified" : 0,
+	"nRemoved" : 0,
+	"upserted" : [ ]
+})
+
+> db.student.find().pretty()
+{
+	"_id" : ObjectId("6192264e5d9327cbe1b20458"),
+	"roll" : 1,
+	"name" : "navin",
+	"age" : 21,
+	"subject_marks" : {
+		"OOP" : 70,
+		"DSA" : 80
+	}
+}
+{
+	"_id" : ObjectId("619226795d9327cbe1b20459"),
+	"roll" : 2,
+	"name" : "saurabh",
+	"age" : 19,
+	"subject_marks" : {
+		"OOP" : 90,
+		"DSA" : 85
+	}
+}
+{
+	"_id" : ObjectId("619226795d9327cbe1b2045a"),
+	"roll" : 3,
+	"name" : "aditya",
+	"age" : 20,
+	"subject_marks" : {
+		"OOP" : 82,
+		"DSA" : 74
+	}
+}
+{
+	"_id" : ObjectId("619226795d9327cbe1b2045b"),
+	"roll" : 4,
+	"name" : "anusha",
+	"age" : 19,
+	"subject_marks" : {
+		"OOP" : 70,
+		"DSA" : 65
+	}
+}
+{
+	"_id" : ObjectId("619226795d9327cbe1b2045c"),
+	"roll" : 5,
+	"name" : "anurag",
+	"age" : 20,
+	"subject_marks" : {
+		"OOP" : 98,
+		"DSA" : 95
+	}
+}
+
+
+//Unique Index
+> db.student.createIndex({'roll':1},{unique:true})
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
+
+//Simple Index
+> db.student.createIndex({"name":1})
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 2,
+	"numIndexesAfter" : 3,
+	"ok" : 1
+}
+
+//Compound Index
+> db.student.createIndex({"subject_marks.OOP":-1,"subject_marks.DSA":-1})
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 3,
+	"numIndexesAfter" : 4,
+	"ok" : 1
+}
+> db.student.getIndexes()
+[
+	{
+		"v" : 2,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_"
+	},
+	{
+		"v" : 2,
+		"unique" : true,
+		"key" : {
+			"roll" : 1
+		},
+		"name" : "roll_1"
+	},
+	{
+		"v" : 2,
+		"key" : {
+			"name" : 1
+		},
+		"name" : "name_1"
+	},
+	{
+		"v" : 2,
+		"key" : {
+			"subject_marks.OOP" : -1,
+			"subject_marks.DSA" : -1
+		},
+		"name" : "subject_marks.OOP_-1_subject_marks.DSA_-1"
+	}
+]
+
+> db.student.find().pretty().sort({name:1})
+{
+	"_id" : ObjectId("619226795d9327cbe1b2045a"),
+	"roll" : 3,
+	"name" : "aditya",
+	"age" : 20,
+	"subject_marks" : {
+		"OOP" : 82,
+		"DSA" : 74
+	}
+}
+{
+	"_id" : ObjectId("619226795d9327cbe1b2045c"),
+	"roll" : 5,
+	"name" : "anurag",
+	"age" : 20,
+	"subject_marks" : {
+		"OOP" : 98,
+		"DSA" : 95
+	}
+}
+{
+	"_id" : ObjectId("619226795d9327cbe1b2045b"),
+	"roll" : 4,
+	"name" : "anusha",
+	"age" : 19,
+	"subject_marks" : {
+		"OOP" : 70,
+		"DSA" : 65
+	}
+}
+{
+	"_id" : ObjectId("6192264e5d9327cbe1b20458"),
+	"roll" : 1,
+	"name" : "navin",
+	"age" : 21,
+	"subject_marks" : {
+		"OOP" : 70,
+		"DSA" : 80
+	}
+}
+{
+	"_id" : ObjectId("619226795d9327cbe1b20459"),
+	"roll" : 2,
+	"name" : "saurabh",
+	"subject_marks" : {
+		"OOP" : 90,
+		"DSA" : 85
+	},
+	"age" : 19
+}
+
+
+> db.student.find().pretty().sort({"subject_marks.OOP":-1,"subject_marks.DSA":-1})
+{
+	"_id" : ObjectId("619226795d9327cbe1b2045c"),
+	"roll" : 5,
+	"name" : "anurag",
+	"age" : 20,
+	"subject_marks" : {
+		"OOP" : 98,
+		"DSA" : 95
+	}
+}
+{
+	"_id" : ObjectId("619226795d9327cbe1b20459"),
+	"roll" : 2,
+	"name" : "saurabh",
+	"subject_marks" : {
+		"OOP" : 90,
+		"DSA" : 85
+	},
+	"age" : 19
+}
+{
+	"_id" : ObjectId("619226795d9327cbe1b2045a"),
+	"roll" : 3,
+	"name" : "aditya",
+	"age" : 20,
+	"subject_marks" : {
+		"OOP" : 82,
+		"DSA" : 74
+	}
+}
+{
+	"_id" : ObjectId("6192264e5d9327cbe1b20458"),
+	"roll" : 1,
+	"name" : "navin",
+	"age" : 21,
+	"subject_marks" : {
+		"OOP" : 70,
+		"DSA" : 80
+	}
+}
+{
+	"_id" : ObjectId("619226795d9327cbe1b2045b"),
+	"roll" : 4,
+	"name" : "anusha",
+	"age" : 19,
+	"subject_marks" : {
+		"OOP" : 70,
+		"DSA" : 65
+	}
+}
+
+> db.student.distinct('age')
+[ 19, 20, 21 ]
+
+> db.student.aggregate([{$group:{_id:"$age",count:{$sum:1}}},{$sort:{"_id":1}}])
+{ "_id" : 19, "count" : 2 }
+{ "_id" : 20, "count" : 2 }
+{ "_id" : 21, "count" : 1 }
+
+> db.student.aggregate([{$group:{_id:"OOP",maxMarks:{$max:"$subject_marks.OOP"}}}])
+{ "_id" : "OOP", "maxMarks" : 98 }
+
+> db.student.aggregate([{$group:{_id:"DSA",minMarks:{$min:"$subject_marks.DSA"}}}])
+{ "_id" : "DSA", "minMarks" : 65 }
+> db.student.aggregate([{$project:{_id:"$roll",sum:{$sum:["$subject_marks.OOP","$subject_marks.DSA"]}}},{$sort:{sum:1}}])
+{ "_id" : 4, "sum" : 135 }
+{ "_id" : 1, "sum" : 150 }
+{ "_id" : 3, "sum" : 156 }
+{ "_id" : 2, "sum" : 175 }
+{ "_id" : 5, "sum" : 193 }
+
+

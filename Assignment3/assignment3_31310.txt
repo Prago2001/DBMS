@@ -1,0 +1,213 @@
+mysql> use Assignment1;
+mysql> show tables;
++-----------------------+
+| Tables_in_Assignment1 |
++-----------------------+
+| Departments           |
+| Professors            |
+| Shift                 |
+| salary_30k            |
+| salary_40k            |
+| salary_50k            |
+| sequences_example     |
+| works                 |
++-----------------------+
+mysql> select * from Professors;
++---------+------------+---------------+-------------+--------+------------+--------------------------+------------+---------+---------+
+| prof_id | prof_fname | prof_lname    | designation | salary | doj        | email                    | phone      | city    | dept_id |
++---------+------------+---------------+-------------+--------+------------+--------------------------+------------+---------+---------+
+|       1 | Shivaji    | Mundhe        | Ast. Prof.  |  40000 | 2009-07-01 | svmundhe@pict.edu        | 24371101   | Pune    |       1 |
+|       2 | Nikhil     | Sangade       | Ast. Prof.  |  30000 | 2019-03-21 | nvsangade@pict.edu       | 9762172013 | Pune    |       1 |
+|       3 | Kartik     | Nandi         | Prof.       |  50000 | 1990-07-01 | kcnandi@pict.edu         | 24371101   | Pune    |       1 |
+|       4 | Urmila     | Pawar         | Ast. Prof.  |  40000 | 2016-01-01 | uspawar@pict.edu         | 7083664201 | Mumbai  |       2 |
+|       5 | Bhumesh    | Masram        | Ast. Prof.  |  30000 | 2017-07-15 | bsmasram@pict.edu        | 24371101   | Mumbai  |       2 |
+|       6 | Archana    | Ghotkar       | Asc. Prof.  |  50000 | 2000-03-01 | aaghotkar@pict.edu       | 24371101   | Pune    |       2 |
+|       7 | Girish     | Mundada       | Prof.       |  50000 | 1900-09-01 | gsmundada@pict.edu       | 24371101   | Nashik  |       4 |
+|       8 | Chetan     | Pawar         | Ast. Prof.  |  15000 | 2018-02-01 | ccpawar@pict.edu         | 9028648563 | Jalgaon |       4 |
+|       9 | Shweta     | Dharmadhikari | Asc. Prof.  |  40000 | 1995-12-31 | scdharmadhikari@pict.edu | 24371101   | Pune    |       3 |
+|      10 | Emmanuel   | M             | Prof.       |  50000 | 2000-08-01 | emmanuelm@pict.edu       | 24371101   | Mumbai  |       3 |
+|      11 | Mayuresh   | Chavan        | Ast. Prof   |  26250 | 2015-01-01 | mschavan@pict.edu        | 24567479   | Sangli  |       2 |
++---------+------------+---------------+-------------+--------+------------+--------------------------+------------+---------+---------+
+
+mysql> select * from Departments;
++---------+-----------+
+| dept_id | dept_name |
++---------+-----------+
+|       1 | FE        |
+|       2 | CE        |
+|       3 | IT        |
+|       4 | ENTC      |
+|       5 | ME        |
++---------+-----------+
+
+
+mysql> select * from Shift;
++---------------+---------+-----------+
+| working_hours | prof_id | shift     |
++---------------+---------+-----------+
+|             8 |       1 | morning   |
+|             8 |       2 | morning   |
+|            10 |       3 | afternoon |
+|             8 |       4 | morning   |
+|            10 |       5 | afternoon |
+|             8 |       6 | morning   |
+|             8 |       7 | morning   |
+|             8 |       8 | morning   |
+|            10 |       9 | afternoon |
+|             8 |      10 | morning   |
+|            10 |      11 | afternoon |
++---------------+---------+-----------+
+
+mysql> select * from works;
++---------+---------+----------+
+| dept_id | prof_id | duration |
++---------+---------+----------+
+|       1 |       1 |        9 |
+|       1 |       2 |        4 |
+|       1 |       3 |       27 |
+|       2 |       4 |        7 |
+|       2 |       5 |        3 |
+|       2 |       6 |       20 |
+|       4 |       7 |       29 |
+|       4 |       8 |        3 |
+|       3 |       9 |       16 |
+|       3 |      10 |       21 |
+|       2 |      11 |        6 |
++---------+---------+----------+
+
+
+#Queries:
+/*1.Find the professor details and department details using NATURAL JOIN*/
+mysql> select prof_id,prof_fname,prof_lname,dept_id,dept_name from Professors natural join Departments;
++---------+------------+---------------+---------+-----------+
+| prof_id | prof_fname | prof_lname    | dept_id | dept_name |
++---------+------------+---------------+---------+-----------+
+|       1 | Shivaji    | Mundhe        |       1 | FE        |
+|       2 | Nikhil     | Sangade       |       1 | FE        |
+|       3 | Kartik     | Nandi         |       1 | FE        |
+|       4 | Urmila     | Pawar         |       2 | CE        |
+|       5 | Bhumesh    | Masram        |       2 | CE        |
+|       6 | Archana    | Ghotkar       |       2 | CE        |
+|      11 | Mayuresh   | Chavan        |       2 | CE        |
+|       9 | Shweta     | Dharmadhikari |       3 | IT        |
+|      10 | Emmanuel   | M             |       3 | IT        |
+|       7 | Girish     | Mundada       |       4 | ENTC      |
+|       8 | Chetan     | Pawar         |       4 | ENTC      |
++---------+------------+---------------+---------+-----------+
+
+/*2.Find the prof_id, prof_name and shift*/
+select p.prof_id,p.prof_fname,p.prof_lname,s.shift from Professors as p inner join Shift as s on s.prof_id = p.prof_id order by p.prof_id;
++---------+------------+---------------+-----------+
+| prof_id | prof_fname | prof_lname    | shift     |
++---------+------------+---------------+-----------+
+|       1 | Shivaji    | Mundhe        | morning   |
+|       2 | Nikhil     | Sangade       | morning   |
+|       3 | Kartik     | Nandi         | afternoon |
+|       4 | Urmila     | Pawar         | morning   |
+|       5 | Bhumesh    | Masram        | afternoon |
+|       6 | Archana    | Ghotkar       | morning   |
+|       7 | Girish     | Mundada       | morning   |
+|       8 | Chetan     | Pawar         | morning   |
+|       9 | Shweta     | Dharmadhikari | afternoon |
+|      10 | Emmanuel   | M             | morning   |
+|      11 | Mayuresh   | Chavan        | afternoon |
++---------+------------+---------------+-----------+
+
+
+/*3.List all the department details and the corresponding names of professors in the same department.*/
+select d.dept_id,d.dept_name,p.prof_fname,p.prof_lname from Departments as d left join Professors as p on p.dept_id = d.dept_id;
++---------+-----------+------------+---------------+
+| dept_id | dept_name | prof_fname | prof_lname    |
++---------+-----------+------------+---------------+
+|       1 | FE        | Shivaji    | Mundhe        |
+|       1 | FE        | Nikhil     | Sangade       |
+|       1 | FE        | Kartik     | Nandi         |
+|       2 | CE        | Urmila     | Pawar         |
+|       2 | CE        | Bhumesh    | Masram        |
+|       2 | CE        | Archana    | Ghotkar       |
+|       2 | CE        | Mayuresh   | Chavan        |
+|       3 | IT        | Shweta     | Dharmadhikari |
+|       3 | IT        | Emmanuel   | M             |
+|       4 | ENTC      | Girish     | Mundada       |
+|       4 | ENTC      | Chetan     | Pawar         |
+|       5 | ME        | NULL       | NULL          |
++---------+-----------+------------+---------------+
+
+/*4.List all the professors and the corresponding names of department*/
+select * from Professors as p inner join Departments as d on p.dept_id = d.dept_id; 
++---------+------------+---------------+-------------+--------+------------+--------------------------+------------+---------+---------+---------+-----------+
+| prof_id | prof_fname | prof_lname    | designation | salary | doj        | email                    | phone      | city    | dept_id | dept_id | dept_name |
++---------+------------+---------------+-------------+--------+------------+--------------------------+------------+---------+---------+---------+-----------+
+|       1 | Shivaji    | Mundhe        | Ast. Prof.  |  40000 | 2009-07-01 | svmundhe@pict.edu        | 24371101   | Pune    |       1 |       1 | FE        |
+|       2 | Nikhil     | Sangade       | Ast. Prof.  |  30000 | 2019-03-21 | nvsangade@pict.edu       | 9762172013 | Pune    |       1 |       1 | FE        |
+|       3 | Kartik     | Nandi         | Prof.       |  50000 | 1990-07-01 | kcnandi@pict.edu         | 24371101   | Pune    |       1 |       1 | FE        |
+|       4 | Urmila     | Pawar         | Ast. Prof.  |  40000 | 2016-01-01 | uspawar@pict.edu         | 7083664201 | Mumbai  |       2 |       2 | CE        |
+|       5 | Bhumesh    | Masram        | Ast. Prof.  |  30000 | 2017-07-15 | bsmasram@pict.edu        | 24371101   | Mumbai  |       2 |       2 | CE        |
+|       6 | Archana    | Ghotkar       | Asc. Prof.  |  50000 | 2000-03-01 | aaghotkar@pict.edu       | 24371101   | Pune    |       2 |       2 | CE        |
+|      11 | Mayuresh   | Chavan        | Ast. Prof   |  26250 | 2015-01-01 | mschavan@pict.edu        | 24567479   | Sangli  |       2 |       2 | CE        |
+|       9 | Shweta     | Dharmadhikari | Asc. Prof.  |  40000 | 1995-12-31 | scdharmadhikari@pict.edu | 24371101   | Pune    |       3 |       3 | IT        |
+|      10 | Emmanuel   | M             | Prof.       |  50000 | 2000-08-01 | emmanuelm@pict.edu       | 24371101   | Mumbai  |       3 |       3 | IT        |
+|       7 | Girish     | Mundada       | Prof.       |  50000 | 1900-09-01 | gsmundada@pict.edu       | 24371101   | Nashik  |       4 |       4 | ENTC      |
+|       8 | Chetan     | Pawar         | Ast. Prof.  |  15000 | 2018-02-01 | ccpawar@pict.edu         | 9028648563 | Jalgaon |       4 |       4 | ENTC      |
++---------+------------+---------------+-------------+--------+------------+--------------------------+------------+---------+---------+---------+-----------+
+/*5.Display professor name, dept_name, shift, salary where prof_id = 11;*/
+select p.prof_fname,p.prof_lname,d.dept_name,s.shift,p.salary from Professors as p inner join Departments as d on d.dept_id = p.dept_id inner join Shift as s on s.prof_id = p.prof_id where p.prof_id=11;
++------------+------------+-----------+-----------+--------+
+| prof_fname | prof_lname | dept_name | shift     | salary |
++------------+------------+-----------+-----------+--------+
+| Mayuresh   | Chavan     | CE        | afternoon |  26250 |
++------------+------------+-----------+-----------+--------+
+
+
+/*6.list the total number of professor in each department.*/
+select count(p.prof_id),d.dept_name from Professors as p right join Departments as d on d.dept_id = p.dept_id group by d.dept_id;
++------------------+-----------+
+| count(p.prof_id) | dept_name |
++------------------+-----------+
+|                3 | FE        |
+|                4 | CE        |
+|                2 | IT        |
+|                2 | ENTC      |
+|                0 | ME        |
++------------------+-----------+
+
+
+/*7. List the prof_id associated department and the dept_name having name ‘ce’;*/
+select p.prof_id,p.dept_id,d.dept_name from Professors as p inner join Departments as d on p.dept_id = d.dept_id having d.dept_name="CE";
++---------+---------+-----------+
+| prof_id | dept_id | dept_name |
++---------+---------+-----------+
+|       4 |       2 | CE        |
+|       5 |       2 | CE        |
+|       6 |       2 | CE        |
+|      11 |       2 | CE        |
++---------+---------+-----------+
+
+/*8. Find the names of all departments where the professors joined in year 2015 (or date of joining is 1-1-2015).*/
+select d.dept_name,p.prof_id,p.prof_fname,p.prof_lname from Professors as p inner join Departments as d on p.dept_id = d.dept_id where p.doj="2015-01-01";
++-----------+---------+------------+------------+
+| dept_name | prof_id | prof_fname | prof_lname |
++-----------+---------+------------+------------+
+| CE        |      11 | Mayuresh   | Chavan     |
++-----------+---------+------------+------------+
+
+/*9.Create view showing the professor and shift details*/
+create view profShift as select p.prof_id,p.prof_fname,p.prof_lname,s.shift from Professors as p inner join Shift as s on s.prof_id = p.prof_id order by p.prof_id;
+mysql> select * from profShift;
++---------+------------+---------------+-----------+
+| prof_id | prof_fname | prof_lname    | shift     |
++---------+------------+---------------+-----------+
+|       1 | Shivaji    | Mundhe        | morning   |
+|       2 | Nikhil     | Sangade       | morning   |
+|       3 | Kartik     | Nandi         | afternoon |
+|       4 | Urmila     | Pawar         | morning   |
+|       5 | Bhumesh    | Masram        | afternoon |
+|       6 | Archana    | Ghotkar       | morning   |
+|       7 | Girish     | Mundada       | morning   |
+|       8 | Chetan     | Pawar         | morning   |
+|       9 | Shweta     | Dharmadhikari | afternoon |
+|      10 | Emmanuel   | M             | morning   |
+|      11 | Mayuresh   | Chavan        | afternoon |
++---------+------------+---------------+-----------+
+
+

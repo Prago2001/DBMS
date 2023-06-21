@@ -1,0 +1,305 @@
+[
+{
+    "model": "sessions.session",
+    "pk": "rz48adu6br7midimwd1e4kococfjko1k",
+    "fields": {
+        "session_data": ".eJxVjDsOwjAQBe_iGlnr4C8lfc5grddrHEC2lE-FuDtESgHtm5n3EhG3tcZt4TlOWVyEEaffLSE9uO0g37HduqTe1nlKclfkQRc59szP6-H-HVRc6rdmY0idrSueWSNQQO0spBQ0UEIPgy6swXJxkEDhoBT6ADRYBR4CZfH-AOUON4k:1mrxNy:hKgyWFTFZ9gZqQKqGUIxxghbtLIv7XUMsI51TjGa4d0",
+        "expire_date": "2021-12-14T07:17:06.239Z"
+    }
+},
+{
+    "model": "authentication.user",
+    "fields": {
+        "password": "pbkdf2_sha256$216000$zD1TeAVgTJcs$EjGZi4H/J6G5eompTB10ADmL3/hbRjcDIRVZzYnetNY=",
+        "last_login": "2021-11-29T05:16:04.663Z",
+        "is_superuser": true,
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2021-11-28T05:24:05.071Z",
+        "role": "",
+        "email": "collegeadmin@abc.com",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "authentication.user",
+    "fields": {
+        "password": "pbkdf2_sha256$216000$yyyRjBnOhor1$ErtJ1I0xe1Eb+jUwj2Bw5EVggKJGfgjM1ZrPeG7lqKo=",
+        "last_login": "2021-11-30T07:17:23.889Z",
+        "is_superuser": false,
+        "first_name": "Pooja",
+        "last_name": "Shinde",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2021-11-28T06:14:20.052Z",
+        "role": "instructor",
+        "email": "instructor@abc.com",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "authentication.user",
+    "fields": {
+        "password": "pbkdf2_sha256$216000$Wj1Gh5vyv6HI$236nXxqWcb6YSmjJK5gE13huFBcpWUZRx41cP4GKqKE=",
+        "last_login": "2021-11-29T15:13:17.927Z",
+        "is_superuser": false,
+        "first_name": "Pratik",
+        "last_name": "Gokhale",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2021-11-28T06:21:03.493Z",
+        "role": "student",
+        "email": "pratikg@abc.com",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "authentication.user",
+    "fields": {
+        "password": "pbkdf2_sha256$216000$OBqOvF0Y4bhL$6CeI34c0HC4/kh30TWV9z43+AVK4vzisUdLZZ9U1uyo=",
+        "last_login": "2021-11-29T15:36:24.305Z",
+        "is_superuser": false,
+        "first_name": "Aishwarya",
+        "last_name": "Dixit",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2021-11-28T13:58:41.242Z",
+        "role": "student",
+        "email": "aishwaryad@abc.com",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "authentication.user",
+    "fields": {
+        "password": "pbkdf2_sha256$216000$aVX3YePgQUQz$PU/7EXEVQEM0oOsuk7cyw/H6pJxkxtOamMjxDH7RIBg=",
+        "last_login": "2021-11-30T07:17:06.230Z",
+        "is_superuser": false,
+        "first_name": "Rakesh",
+        "last_name": "C",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2021-11-29T17:11:06.218Z",
+        "role": "student",
+        "email": "rakeshc@abc.com",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "core.assignmentsubmission",
+    "pk": 4,
+    "fields": {
+        "user": [
+            "pratikg@abc.com"
+        ],
+        "title": 2,
+        "course_name": 1,
+        "name": "Pratik",
+        "university_id": "12345",
+        "content": "",
+        "file": "media/relationaltable_2.png",
+        "marksObtained": 9
+    }
+},
+{
+    "model": "core.assignmentsubmission",
+    "pk": 5,
+    "fields": {
+        "user": [
+            "aishwaryad@abc.com"
+        ],
+        "title": 2,
+        "course_name": 1,
+        "name": "Aishwarya",
+        "university_id": "12378",
+        "content": "",
+        "file": "media/erdiagram.png",
+        "marksObtained": 10
+    }
+},
+{
+    "model": "core.assignmentsubmission",
+    "pk": 6,
+    "fields": {
+        "user": [
+            "rakeshc@abc.com"
+        ],
+        "title": 2,
+        "course_name": 1,
+        "name": "Rakesh",
+        "university_id": "547896",
+        "content": "#Queries\r\nselect * from Table;",
+        "file": "",
+        "marksObtained": 7
+    }
+},
+{
+    "model": "core.assignmentsubmission",
+    "pk": 7,
+    "fields": {
+        "user": [
+            "rakeshc@abc.com"
+        ],
+        "title": 4,
+        "course_name": 2,
+        "name": "Rakesh",
+        "university_id": "547896",
+        "content": "Sample Code",
+        "file": "",
+        "marksObtained": null
+    }
+},
+{
+    "model": "core.assignment",
+    "pk": 2,
+    "fields": {
+        "user": [
+            "instructor@abc.com"
+        ],
+        "course_name": 1,
+        "title": "MySQL - 1",
+        "content": "Assignment 1",
+        "marks": "10",
+        "created_at": "2021-11-28T12:26:18.695Z"
+    }
+},
+{
+    "model": "core.assignment",
+    "pk": 3,
+    "fields": {
+        "user": [
+            "instructor@abc.com"
+        ],
+        "course_name": 1,
+        "title": "MySQL - 2",
+        "content": "Assignment 2",
+        "marks": "10",
+        "created_at": "2021-11-29T17:02:34.784Z"
+    }
+},
+{
+    "model": "core.assignment",
+    "pk": 4,
+    "fields": {
+        "user": [
+            "instructor@abc.com"
+        ],
+        "course_name": 2,
+        "title": "DS - 1",
+        "content": "Assignment 1",
+        "marks": "25",
+        "created_at": "2021-11-29T17:04:31.404Z"
+    }
+},
+{
+    "model": "core.course",
+    "pk": 1,
+    "fields": {
+        "user": [
+            "instructor@abc.com"
+        ],
+        "course_name": "Database Management Systems",
+        "course_image": "media/download_Cz2sfRz.png",
+        "teacher_name": "Pooja Shinde",
+        "teacher_details": "N/A",
+        "course_description": "DBMS",
+        "created_at": "2021-11-28",
+        "end_date": "31/12/2021"
+    }
+},
+{
+    "model": "core.course",
+    "pk": 2,
+    "fields": {
+        "user": [
+            "instructor@abc.com"
+        ],
+        "course_name": "Data Structures",
+        "course_image": "media/1430829-200.png",
+        "teacher_name": "Pooja Shinde",
+        "teacher_details": "N/A",
+        "course_description": "N/A",
+        "created_at": "2021-11-29",
+        "end_date": "31/12/2021"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2021-11-28T13:57:17.940Z",
+        "user": [
+            "collegeadmin@abc.com"
+        ],
+        "content_type": [
+            "core",
+            "assignmentsubmission"
+        ],
+        "object_id": "2",
+        "object_repr": "123456",
+        "action_flag": 2,
+        "change_message": "[]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+        "action_time": "2021-11-28T13:57:26.276Z",
+        "user": [
+            "collegeadmin@abc.com"
+        ],
+        "content_type": [
+            "core",
+            "assignmentsubmission"
+        ],
+        "object_id": "2",
+        "object_repr": "123456",
+        "action_flag": 2,
+        "change_message": "[]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+        "action_time": "2021-11-28T14:01:47.055Z",
+        "user": [
+            "collegeadmin@abc.com"
+        ],
+        "content_type": [
+            "core",
+            "assignmentsubmission"
+        ],
+        "object_id": "3",
+        "object_repr": "123454",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+        "action_time": "2021-11-28T14:01:51.290Z",
+        "user": [
+            "collegeadmin@abc.com"
+        ],
+        "content_type": [
+            "core",
+            "assignmentsubmission"
+        ],
+        "object_id": "2",
+        "object_repr": "123456",
+        "action_flag": 3,
+        "change_message": ""
+    }
+}
+]

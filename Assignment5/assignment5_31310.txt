@@ -1,0 +1,170 @@
+create database Assignment5;
+use Assignment5;
+
+create table studentMarks(rollNum INT Primary Key,name VARCHAR(100),marks INT);
+
+create table result(rollNum INT, name VARCHAR(100), grade VARCHAR(25),foreign key(rollNum) references studentMarks(rollNum));
+
+delimiter //
+create procedure insertStudent(IN r INT,n VARCHAR(100),m INT)
+begin
+insert into studentMarks values(r,n,m);
+end
+delimiter ;
+
+call insertStudent(1,'Aditi',1500);
+call insertStudent(2,'Aditya',1300);
+call insertStudent(3,'Anurag',1400);
+call insertStudent(4,'Asim',990);
+call insertStudent(5,'Aryan',989);
+call insertStudent(6,'Aneesh',900);
+call insertStudent(7,'Abhishek',899);
+call insertStudent(8,'Amit',840);
+call insertStudent(9,'Anay',800);
+
+mysql> select * from studentMarks;
++---------+----------+-------+
+| rollNum | name     | marks |
++---------+----------+-------+
+|       1 | Aditi    |  1500 |
+|       2 | Aditya   |  1300 |
+|       3 | Anurag   |  1400 |
+|       4 | Asim     |   990 |
+|       5 | Aryan    |   989 |
+|       6 | Aneesh   |   900 |
+|       7 | Abhishek |   899 |
+|       8 | Amit     |   840 |
+|       9 | Anay     |   800 |
++---------+----------+-------+
+
+
+
+delimiter //
+create procedure calculateGrade(IN roll INT,OUT class VARCHAR(25))
+begin 
+declare c varchar(25);
+declare m int;
+declare n varchar(100);
+select marks into m from studentMarks where rollNum = roll;
+select name into n from studentMarks where rollNum = roll;
+if m>=990 and m<=1500 then
+set c='Distinction';
+elseif m>=900 and m<=989 then
+set c='First Class';
+elseif m>=825 and m<=899 then
+set c='Higher Second Class';
+else
+set c='N/A';
+end if;
+insert into result values(roll,n,c);
+set class=c;
+end//
+delimiter ;
+
+
+delimiter //
+create function displayGrade(roll int)
+returns varchar(25)
+deterministic
+begin
+declare c varchar(25);
+declare m int;
+declare n varchar(100);
+select marks into m from studentMarks where rollNum = roll;
+select name into n from studentMarks where rollNum = roll;
+if m>=990 and m<=1500 then
+set c='Distinction';
+elseif m>=900 and m<=989 then
+set c='First Class';
+elseif m>=825 and m<=899 then
+set c='Higher Second Class';
+else
+set c='N/A';
+end if;
+insert into result values(roll,n,c);
+return c;
+end//
+delimiter ;
+
+
+call calculateGrade(1,@class);
+mysql> select @class;
++-------------+
+| @class      |
++-------------+
+| Distinction |
++-------------+
+call calculateGrade(2,@class);
+call calculateGrade(3,@class);
+call calculateGrade(4,@class);
+call calculateGrade(5,@class);
+call calculateGrade(6,@class);
+call calculateGrade(7,@class);
+call calculateGrade(8,@class);
+
+mysql> select * from result;
++---------+----------+---------------------+
+| rollNum | name     | grade               |
++---------+----------+---------------------+
+|       1 | Aditi    | Distinction         |
+|       2 | Aditya   | Distinction         |
+|       3 | Anurag   | Distinction         |
+|       4 | Asim     | Distinction         |
+|       5 | Aryan    | First Class         |
+|       6 | Aneesh   | First Class         |
+|       7 | Abhishek | Higher Second Class |
+|       8 | Amit     | Higher Second Class |
++---------+----------+---------------------+
+
+mysql> select displayGrade(1);
++-----------------+
+| displayGrade(1) |
++-----------------+
+| Distinction     |
++-----------------+
+
+mysql> select displayGrade(4);
++-----------------+
+| displayGrade(4) |
++-----------------+
+| Distinction     |
++-----------------+
+mysql> select displayGrade(7);
++---------------------+
+| displayGrade(7)     |
++---------------------+
+| Higher Second Class |
++---------------------+
+
+
+mysql> select displayGrade(9);
++-----------------+
+| displayGrade(9) |
++-----------------+
+| N/A             |
++-----------------+
+
+
+call calculateGrade(9,@class);
+mysql> select @class;
++--------+
+| @class |
++--------+
+| N/A    |
++--------+
+mysql> select * from result;
++---------+----------+---------------------+
+| rollNum | name     | grade               |
++---------+----------+---------------------+
+|       1 | Aditi    | Distinction         |
+|       2 | Aditya   | Distinction         |
+|       3 | Anurag   | Distinction         |
+|       4 | Asim     | Distinction         |
+|       5 | Aryan    | First Class         |
+|       6 | Aneesh   | First Class         |
+|       7 | Abhishek | Higher Second Class |
+|       8 | Amit     | Higher Second Class |
+|       9 | Anay     | N/A                 |
++---------+----------+---------------------+
+
+

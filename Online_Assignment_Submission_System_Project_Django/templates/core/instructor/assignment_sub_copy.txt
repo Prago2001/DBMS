@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Assignments{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="col-12 col-sm-6 col-md-10">
+                    <strong><h3>Assignments</h3></strong>
+        <hr/>
+            {% for foo in assignment_submission %}
+                <!-- <p><h4>Course Name</h4>{{ foo.course_name }}</p>
+                <p><h4>Title</h4>{{ foo.title }}</p>
+                <p> <h4>Name</h4> {{ foo.name }} </p>
+
+                <p> <h4>Id</h4> {{ foo.university_id }} </p>
+                <p> <h4>Answer</h4> 
+                    {% if foo.content %}
+                        {{ foo.content }}
+                    {% else %}
+                        <a href="/media/{{foo.file}}" >{{foo.file}}</a>
+                    {% endif %}
+                </p>
+                {% if request.user.is_authenticated and request.user.role == 'instructor' %}
+                    <p>
+                        {% if foo.marksObtained %}
+                        <h4>Marks Obtained</h4>
+                            {{ foo.marksObtained }}
+                        {% else %}
+                            <form action="#" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ formset }}
+                                <input type="submit" value="Enter Marks" class="btn btn-primary btn-md text-white">
+                            </form>
+                        {% endif %}
+                    </p>
+                    {% elif request.user.is_authenticated and request.user.role == 'student' and request.user.first_name == foo.name %}
+                    <p>
+                        <h4>Marks Obtained</h4>
+                        {% if foo.marksObtained %}
+                            {{foo.marksObtained}}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </p>
+                {% endif %}
+                <br/>
+                {% if request.user.is_authenticated and request.user.role == 'instructor' %}
+                    <a href="{% url 'core:assignment-submission-delete' foo.id %}">Delete Assignment</a>
+                    <hr/>
+                {% endif %}
+            {% endfor %}
+
+
+
+
+            <br/> -->
+
+
+            <br/>
+
+
+        </div>
+
+    </div>
+
+{% endblock %}

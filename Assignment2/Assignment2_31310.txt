@@ -1,0 +1,252 @@
+create Database Assignment1;
+use Assignment1;
+
+create table Departments( dept_id INT PRIMARY KEY, dept_name VARCHAR(10) );
+
+create table Professors( 
+prof_id INT PRIMARY KEY, prof_fname VARCHAR(100), prof_lname VARCHAR(100), designation VARCHAR(100), salary INT, doj DATE, email VARCHAR(255), phone INT, city VARCHAR(100) );
+alter table Professors add dept_id INT;
+alter table Professors add foreign key(dept_id) references Departments(dept_id) on delete cascade;
+
+create table Shift( prof_id INT, shift VARCHAR(100), working_hours INT );
+alter table Shift add foreign key(prof_id) references Professors(prof_id) on delete cascade;
+
+create table works( dept_id INT, prof_id INT, duration YEAR, foreign key (dept_id) references Departments on delete cascade, foreign key (prof_id) references Professors on delete cascade);
+
+insert into Departments(dept_id,dept_name) 
+values (1, 'FE'), (2,'CE'),(3,'IT'),(4,'ENTC');
+
+insert into Professors(prof_id,prof_fname,prof_lname,designation,salary,doj,email,phone,city,dept_id) 
+values (1,'Shivaji','Mundhe','Ast. Prof.',40000,'2009-07-01','svmundhe@pict.edu','24371101','Pune',1),
+	(2,'Nikhil','Sangade','Ast. Prof.',30000,'2019-03-21','nvsangade@pict.edu','9762172013','Pune',1),
+	(3,'Kartik','Nandi','Prof.',50000,'1990-07-01','kcnandi@pict.edu','24371101','Pune',1),
+	(4,'Urmila','Pawar','Ast. Prof.',40000,'2016-01-01','uspawar@pict.edu','7083664201','Mumbai',2),
+	(5,'Bhumesh','Masram','Ast. Prof.',30000,'2017-07-15','bsmasram@pict.edu','24371101','Mumbai',2),
+	(6,'Archana','Ghotkar','Asc. Prof.',50000,'2000-03-01','aaghotkar@pict.edu','24371101','Pune',2),
+	(7,'Girish','Mundada','Prof.',50000,'1900-09-01','gsmundada@pict.edu','24371101','Nashik',4),
+	(8,'Chetan','Pawar','Ast. Prof.',15000,'2018-02-01','ccpawar@pict.edu','9028648563','Jalgaon',4),
+	(9,'Shweta','Dharmadhikari','Asc. Prof.',40000,'1995-12-31','scdharmadhikari@pict.edu','24371101','Pune',3),
+	(10,'Emmanuel','M','Prof.',50000,'2000-08-01','emmanuelm@pict.edu','24371101','Mumbai',3),
+	(11,'Mayuresh','Chavan','Ast. Prof',25000,'2015-01-01','mschavan@pict.edu','24567479','Sangli',2);
+	
+
+insert into Shift(shift,working_hours,prof_id)
+values('morning',8,1),
+	('morning',8,2),
+	('afternoon',10,3),
+	('morning',8,4),
+	('afternoon',10,5),
+	('morning',8,6),
+	('morning',8,7),
+	('morning',8,8),
+	('afternoon',10,9),
+	('morning',8,10);
+	
+	
+insert into works(dept_id,prof_id,duration)
+values (1,1,9),
+	(1,2,4),
+	(1,3,27),
+	(2,4,7),
+	(2,5,3),
+	(2,6,20),
+	(4,7,29),
+	(4,8,3),
+	(3,9,16),
+	(3,10,21);
+	
+	
+/*2. Display all professors details with city pune and mumbai and professor first name starting with 'a' or 'd'.*/
+	
+select * from Professors where ((city='Pune' or city='Mumbai') and  (prof_fname like 'A%' or prof_fname like 'D%'));
+/*mysql> select * from Professors where ((city='Pune' or city='Mumbai') and  (prof_fname like 'A%' or prof_fname like 'D%'));
++---------+------------+------------+-------------+--------+------------+--------------------+----------+------+---------+
+| prof_id | prof_fname | prof_lname | designation | salary | doj        | email              | phone    | city | dept_id |
++---------+------------+------------+-------------+--------+------------+--------------------+----------+------+---------+
+|       6 | Archana    | Ghotkar    | Asc. Prof.  |  50000 | 2000-03-01 | aaghotkar@pict.edu | 24371101 | Pune |       2 |
++---------+------------+------------+-------------+--------+------------+--------------------+----------+------+---------+
+1 row in set (0.00 sec)
+*/
+
+/*3. list the number of different cities of professors.(use of distinct*/
+select count(distinct city) from Professors;
+/*
+mysql> select count(distinct city) from Professors;
++----------------------+
+| count(distinct city) |
++----------------------+
+|                    5 |
++----------------------+
+1 row in set (0.00 sec)
+*/
+
+
+/*4. Give 5% increase in salary of the professors with date of joining 1-1-2015.*/
+update Professors set salary=salary * 1.05 where date(doj) = '2015-01-01';
+/*mysql> select * from Professors;
++---------+------------+---------------+-------------+--------+------------+--------------------------+------------+---------+---------+
+| prof_id | prof_fname | prof_lname    | designation | salary | doj        | email                    | phone      | city    | dept_id |
++---------+------------+---------------+-------------+--------+------------+--------------------------+------------+---------+---------+
+|       1 | Shivaji    | Mundhe        | Ast. Prof.  |  40000 | 2009-07-01 | svmundhe@pict.edu        | 24371101   | Pune    |       1 |
+|       2 | Nikhil     | Sangade       | Ast. Prof.  |  30000 | 2019-03-21 | nvsangade@pict.edu       | 9762172013 | Pune    |       1 |
+|       3 | Kartik     | Nandi         | Prof.       |  50000 | 1990-07-01 | kcnandi@pict.edu         | 24371101   | Pune    |       1 |
+|       4 | Urmila     | Pawar         | Ast. Prof.  |  40000 | 2016-01-01 | uspawar@pict.edu         | 7083664201 | Mumbai  |       2 |
+|       5 | Bhumesh    | Masram        | Ast. Prof.  |  30000 | 2017-07-15 | bsmasram@pict.edu        | 24371101   | Mumbai  |       2 |
+|       6 | Archana    | Ghotkar       | Asc. Prof.  |  50000 | 2000-03-01 | aaghotkar@pict.edu       | 24371101   | Pune    |       2 |
+|       7 | Girish     | Mundada       | Prof.       |  50000 | 1900-09-01 | gsmundada@pict.edu       | 24371101   | Nashik  |       4 |
+|       8 | Chetan     | Pawar         | Ast. Prof.  |  15000 | 2018-02-01 | ccpawar@pict.edu         | 9028648563 | Jalgaon |       4 |
+|       9 | Shweta     | Dharmadhikari | Asc. Prof.  |  40000 | 1995-12-31 | scdharmadhikari@pict.edu | 24371101   | Pune    |       3 |
+|      10 | Emmanuel   | M             | Prof.       |  50000 | 2000-08-01 | emmanuelm@pict.edu       | 24371101   | Mumbai  |       3 |
+|      11 | Mayuresh   | Chavan        | Ast. Prof   |  26250 | 2015-01-01 | mschavan@pict.edu        | 24567479   | Sangli  |       2 |
++---------+------------+---------------+-------------+--------+------------+--------------------------+------------+---------+---------+
+11 rows in set (0.00 sec)
+*/
+
+/*6. Find the names of professors belonging to pune or mumbai*/
+select prof_fname from Professors where (city='Pune' or city='Mumbai');
+/*
+mysql> select prof_fname from Professors where (city='Pune' or city='Mumbai');
++------------+
+| prof_fname |
++------------+
+| Shivaji    |
+| Nikhil     |
+| Kartik     |
+| Urmila     |
+| Bhumesh    |
+| Archana    |
+| Shweta     |
+| Emmanuel   |
++------------+
+8 rows in set (0.00 sec)
+*/
+
+/*6. Find the names of professors belonging to pune or mumbai*/
+select * from Professors where date(doj) = '2015-01-01' or date(doj) = '2016-01-01';
+/*
+mysql> select * from Professors where date(doj) = '2015-01-01' or date(doj) = '2016-01-01';
++---------+------------+------------+-------------+--------+------------+-------------------+------------+--------+---------+
+| prof_id | prof_fname | prof_lname | designation | salary | doj        | email             | phone      | city   | dept_id |
++---------+------------+------------+-------------+--------+------------+-------------------+------------+--------+---------+
+|       4 | Urmila     | Pawar      | Ast. Prof.  |  40000 | 2016-01-01 | uspawar@pict.edu  | 7083664201 | Mumbai |       2 |
+|      11 | Mayuresh   | Chavan     | Ast. Prof   |  26250 | 2015-01-01 | mschavan@pict.edu | 24567479   | Sangli |       2 |
++---------+------------+------------+-------------+--------+------------+-------------------+------------+--------+---------+
+2 rows in set (0.00 sec)
+*/
+
+
+/*7. Find the professors who joined on date 1-1-2015 as well as in 1-1-2016*/
+select * from Professors where salary = (select max(salary) from Professors);
+
+/*
+mysql> select * from Professors where salary = (select max(salary) from Professors);
++---------+------------+------------+-------------+--------+------------+--------------------+----------+--------+---------+
+| prof_id | prof_fname | prof_lname | designation | salary | doj        | email              | phone    | city   | dept_id |
++---------+------------+------------+-------------+--------+------------+--------------------+----------+--------+---------+
+|       3 | Kartik     | Nandi      | Prof.       |  50000 | 1990-07-01 | kcnandi@pict.edu   | 24371101 | Pune   |       1 |
+|       6 | Archana    | Ghotkar    | Asc. Prof.  |  50000 | 2000-03-01 | aaghotkar@pict.edu | 24371101 | Pune   |       2 |
+|       7 | Girish     | Mundada    | Prof.       |  50000 | 1900-09-01 | gsmundada@pict.edu | 24371101 | Nashik |       4 |
+|      10 | Emmanuel   | M          | Prof.       |  50000 | 2000-08-01 | emmanuelm@pict.edu | 24371101 | Mumbai |       3 |
++---------+------------+------------+-------------+--------+------------+--------------------+----------+--------+---------+
+4 rows in set (0.00 sec)
+
+*/
+
+
+/*8. Find the professor having maximum salary and names of professors having salary between 10,000 and 20,000.*/
+select prof_fname, prof_lname from Professors where salary between 10000 and 20000;
+/*
+mysql> select prof_fname, prof_lname from Professors where salary between 10000 and 20000;
++------------+------------+
+| prof_fname | prof_lname |
++------------+------------+
+| Chetan     | Pawar      |
++------------+------------+
+1 row in set (0.00 sec)
+*/
+
+/*9. Display all professors name with salary and date of joining with decreasing order of salary.*/
+select prof_fname,prof_lname,salary,doj from Professors order by salary DESC;
+/*
+mysql> select prof_fname,prof_lname,salary,doj from Professors order by salary DESC;
++------------+---------------+--------+------------+
+| prof_fname | prof_lname    | salary | doj        |
++------------+---------------+--------+------------+
+| Kartik     | Nandi         |  50000 | 1990-07-01 |
+| Archana    | Ghotkar       |  50000 | 2000-03-01 |
+| Girish     | Mundada       |  50000 | 1900-09-01 |
+| Emmanuel   | M             |  50000 | 2000-08-01 |
+| Shivaji    | Mundhe        |  40000 | 2009-07-01 |
+| Urmila     | Pawar         |  40000 | 2016-01-01 |
+| Shweta     | Dharmadhikari |  40000 | 1995-12-31 |
+| Nikhil     | Sangade       |  30000 | 2019-03-21 |
+| Bhumesh    | Masram        |  30000 | 2017-07-15 |
+| Mayuresh   | Chavan        |  26250 | 2015-01-01 |
+| Chetan     | Pawar         |  15000 | 2018-02-01 |
++------------+---------------+--------+------------+
+11 rows in set (0.00 sec)
+*/
+
+
+
+/*10. Display professors name, date of joining and dept_id with salary 30000, 40000 and 50000*/
+create view salary_30k as select p.prof_fname,p.prof_lname,p.doj,p.dept_id from Professors as p where salary = 30000;	
+/*
+mysql> select * from salary_30k;
++------------+------------+------------+---------+
+| prof_fname | prof_lname | doj        | dept_id |
++------------+------------+------------+---------+
+| Nikhil     | Sangade    | 2019-03-21 |       1 |
+| Bhumesh    | Masram     | 2017-07-15 |       2 |
++------------+------------+------------+---------+
+2 rows in set (0.00 sec)
+*/
+create view salary_40k as select p.prof_fname,p.prof_lname,p.doj,p.dept_id,d.dept_name from Professors as p inner join Departments as d on d.dept_id = p.dept_id where salary = 40000;
+/*
+mysql> select * from salary_40k;
++------------+---------------+------------+---------+-----------+
+| prof_fname | prof_lname    | doj        | dept_id | dept_name |
++------------+---------------+------------+---------+-----------+
+| Shivaji    | Mundhe        | 2009-07-01 |       1 | FE        |
+| Urmila     | Pawar         | 2016-01-01 |       2 | CE        |
+| Shweta     | Dharmadhikari | 1995-12-31 |       3 | IT        |
++------------+---------------+------------+---------+-----------+
+3 rows in set (0.00 sec)
+*/
+
+create view salary_50k as select p.prof_fname,p.prof_lname,p.doj,p.dept_id,d.dept_name from Professors as p inner join Departments as d on d.dept_id = p.dept_id where salary = 50000;
+/*
+mysql> select * from salary_50k;
++------------+------------+------------+---------+-----------+
+| prof_fname | prof_lname | doj        | dept_id | dept_name |
++------------+------------+------------+---------+-----------+
+| Kartik     | Nandi      | 1990-07-01 |       1 | FE        |
+| Archana    | Ghotkar    | 2000-03-01 |       2 | CE        |
+| Girish     | Mundada    | 1900-09-01 |       4 | ENTC      |
+| Emmanuel   | M          | 2000-08-01 |       3 | IT        |
++------------+------------+------------+---------+-----------+
+4 rows in set (0.00 sec)
+*/
+
+/*Indices Example*/
+create index simpleIndex on Professors(salary);
+create index compositeIndex on Professors(prof_fname,prof_lname);
+create unique index uniqueIndex on Professors(email);
+
+
+
+/*Sequences Example*/
+create table sequences_example(
+    emp_no INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50)
+);
+INSERT INTO sequences_example(first_name,last_name)
+VALUES('John','Doe'),
+      ('Mary','Jane');
+DELETE FROM sequences_example
+WHERE emp_no = 2;
+INSERT INTO sequences_example(first_name,last_name)
+VALUES('Jack','Lee');
+	
+

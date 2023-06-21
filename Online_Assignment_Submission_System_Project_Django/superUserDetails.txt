@@ -1,0 +1,14 @@
+email: collegeadmin@abc.com
+password: pict@123
+
+instructor1: instructor@abc.com
+password: pict@123
+
+student1: pratikg@abc.com
+password: pict@123
+
+student: aishwaryad@abc.com
+password: pict@123
+
+student: rakeshc@abc.com
+password: pict@123
